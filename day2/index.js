@@ -31,8 +31,8 @@ const getSquareFeet = ([l, w, h]) => {
 }
 
 const calculateRibbon = (dimensions = []) => {
-    const sorted = [...dimensions];
-    const [a, b, c] = sorted.sort(((a, b) => a - b));
+    const cloned = [...dimensions];
+    const [a, b, c] = cloned.sort(((a, b) => a - b));
 
     const bow = a * b * c;
     const ribbon = a + a + b + b;
