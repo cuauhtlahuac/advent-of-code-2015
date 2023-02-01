@@ -7,31 +7,56 @@ const getExtraArea = (a1, a2, a3) => {
     return smallest;
 }
 
-const getSquareFeet = ([l, w, h]) => {
+const getAreas = (l, w, h) => {
     const firstArea = (l * w);
     const secondArea = (w * h);
     const thirdArea = (h * l);
+
+    return {
+        firstArea,
+        secondArea,
+        thirdArea,
+    }
+}
+
+const getSquareFeet = ([l, w, h]) => {
+    const {
+        firstArea,
+        secondArea,
+        thirdArea,
+    } = getAreas(l, w, h)
     const extraArea = getExtraArea(firstArea, secondArea, thirdArea);
 
     return (2 * firstArea) + (2 * secondArea) + (2 * thirdArea) + extraArea;
 }
 
+const calculateRibbon = (dimensions = []) => {
+    const sorted = [...dimensions];
+    const [a, b, c] = sorted.sort(((a, b) => a - b));
+
+    const bow = a * b * c;
+    const ribbon = a + a + b + b;
+    return ribbon + bow;
+}
+
 const calculate = (data) => {
     let total = 0;
+    let totalRibbon = 0;
     let dimensions = []
     let current = '';
     for (let index = 0; index <= data.length; index++) {
         const element = data[index];
 
         if (element === 'x') {
-            dimensions.push(current)
+            dimensions.push(Number.parseFloat(current))
             current = '';
             continue;
         }
 
         if (element === '\n' || element === undefined) {
-            dimensions.push(current)
+            dimensions.push(Number.parseFloat(current))
             total += getSquareFeet(dimensions)
+            totalRibbon += calculateRibbon(dimensions);
             dimensions = []
             current = '';
             continue;
@@ -40,7 +65,7 @@ const calculate = (data) => {
         current += element;
     }
 
-    return total;
+    return [total, totalRibbon];
 }
 
 fs.readFile('./input.txt', 'utf8', (err, data) => {
@@ -49,6 +74,7 @@ fs.readFile('./input.txt', 'utf8', (err, data) => {
         return;
     }
 
-    const total = calculate(data)
-    return total;
+    const result = calculate(data)
+    console.log(result)
+    return result;
 });
