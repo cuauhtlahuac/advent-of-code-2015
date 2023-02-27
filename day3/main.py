@@ -1,33 +1,24 @@
-coords = {
-    '^': 1,
-    '>': 2,
-    'v': 3,
-    '<': 4,
-}
-
-houses = 0
+from delivery import Delivery
 
 with open('input.txt') as f:
     lines = f.readlines()
     inputText = lines[0]
-    matrix = {}
 
-    current_x = 0
-    current_y = 0
+    santa = Delivery('santa')
+    robot = Delivery('robot')
 
+    final_matrix = {}
+    turn = 1
     for char in inputText:
-        if char in coords:
-            # do a array matrix
-            if coords[char] == 1:
-                current_y += 1
-                matrix[str(current_x) + str(current_y)] = char
-            if coords[char] == 2:
-                current_x += 1
-                matrix[str(current_x) + str(current_y)] = char
-            if coords[char] == 3:
-                current_y -= 1
-                matrix[str(current_x) + str(current_y)] = char
-            if coords[char] == 4:
-                current_x -= 1
-                matrix[str(current_x) + str(current_y)] = char
-    print(len(matrix))
+        if turn % 2 == 0:
+            robot.move_position(char)
+        else:
+            santa.move_position(char)
+        turn += 1
+
+    for matrix in santa.matrix:
+        final_matrix[matrix] = matrix
+    for matrix in robot.matrix:
+        final_matrix[matrix] = matrix
+
+    print(len(final_matrix))
