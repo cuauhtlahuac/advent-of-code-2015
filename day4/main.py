@@ -10,7 +10,7 @@ def encontrar_numero(secret_key):
         # Convertir el hash a hexadecimal
         hex_result = result.hexdigest()
         # Verificar si comienza con al menos cinco ceros
-        if hex_result.startswith('00000'):
+        if hex_result.startswith('000000'):
             return numero
         numero += 1
 
